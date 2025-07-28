@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>グッズ計算機</title>
+  <style>
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: linear-gradient(to bottom right, #f0f0f0, #e8e8e8);
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #222;
+    }
+
+    #goods-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .item {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s ease;
+    }
+
+    .item:hover {
+      transform: scale(1.02);
+    }
+
+    .item img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .item-name {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .item-price {
+      color: #555;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+
+    .item-qty {
+      width: 80%;
+      padding: 6px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    #total {
+      margin: 40px auto 0;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>グッズ計算機</h1>
+  <div id="goods-list"></div>
+  <div id="total">合計: 0 円</div>
+
+  <script>
+    const imageUrls = [
+      "IMG_001.JPG”,
+      “IMG_001.JPG”,
+      “IMG_002.JPG”,
+      “IMG_003.JPG”,
+      “IMG_004.JPG”,
+      “IMG_005.JPG”,
+      “IMG_006.JPG”,
+      “IMG_007.JPG”,
+      “IMG_008.JPG”,
+      “IMG_009.JPG”,
+      “IMG_0010.JPG”,
+      “IMG_0011.JPG”,
+      “IMG_0012.JPG”,
+      “IMG_0013.JPG”,
+      “IMG_0014.JPG”,
+      “IMG_0015.JPG”,
+      “IMG_0016.JPG”,
+      “IMG_0017.JPG”,
+    ];
+
+    const goods = [
+      { name: "Tシャツ", price: 5500 },
+      { name: "ボールキャップ", price: 4500 },
+      { name: "MINIYONG'sミニチュアキーリング", price: 3500 },
+      { name: "アクリルペンライト🅰️black", price: 2500 },
+      { name: "アクリルペンライト 🅱️white", price: 2500 },
+      { name: "フェイスタオル🅰️black", price: 2500 },
+      { name: "フェイスタオル🅱️white", price: 2500 },
+      { name: "トートバッグ", price: 3000 },
+      { name: "コーヒーマグ", price: 2000 },
+      { name: "ガジェットポーチ", price: 2300 },
+      { name: "カチンコラバーキーホルダー🅰️black", price: 1200 },
+      { name: "カチンコラバーキーホルダー🅱️white", price: 1200 },
+      { name: "アクリルスタンド🅰️black", price: 2300 },
+      { name: "アクリルスタンド🅱️white", price: 2300 },
+      { name: "スクエア缶バッジランダム4種", price: 500 },
+      { name: "チケットキーホルダー会場別2種", price: 1000 },
+      { name: "ランダムトレカ8種", price: 300 }
+    ];
+
+    const container = document.getElementById("goods-list");
+
+    goods.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "item";
+
+      div.innerHTML = `
+        <img src="${imageUrls[index]}" alt="${item.name}" />
+        <div class="item-name">${item.name}</div>
+        <div class="item-price">${item.price}円</div>
+        <input type="number" min="0" value="0" class="item-qty" data-index="${index}" />
+      `;
+
+      container.appendChild(div);
+    });
+
+    const qtyInputs = document.querySelectorAll(".item-qty");
+    qtyInputs.forEach(input => {
+      input.addEventListener("input", () => {
+        let total = 0;
+        qtyInputs.forEach(input => {
+          const i = parseInt(input.dataset.index);
+          const quantity = parseInt(input.value) || 0;
+          total += goods[i].price * quantity;
+        });
+        document.getElementById("total").textContent = `合計: ${total.toLocaleString()} 円`;
+      });
+    });
+  </script>
+</body>
+</html>
